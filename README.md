@@ -25,10 +25,9 @@ Sebelum memulai, pastikan Anda telah menginstal:
 git clone https://github.com/username/ArticleNewsAPI.git
 cd ArticleNewsAPI
 
-2️⃣ Buat Virtual Environment & Install Dependencies
-bash
-Copy
-Edit
+### 2️⃣ Buat Virtual Environment & Install Dependencies
+```bash
+
 python -m venv venv
 source venv/bin/activate  # macOS/Linux
 venv\Scripts\activate     # Windows
@@ -52,8 +51,7 @@ npx tailwindcss init -p
 Edit file tailwind.config.js dan tambahkan:
 
 javascript
-Copy
-Edit
+
 module.exports = {
   content: [
     '../templates/**/*.html',
