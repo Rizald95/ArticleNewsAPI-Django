@@ -1,0 +1,30 @@
+# Virtual environment
+venv/
+
+# Compiled Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Database (jika pakai SQLite)
+db.sqlite3
+
+# Logs
+logs/
+*.log
+
+# Django migrations (opsional, jika ingin diabaikan)
+**/migrations/**
+
+# Environment variables (jangan push API key!)
+.env
+
+# PyCharm/VSCode IDE files
+.vscode/
+.idea/
+*.swp
+
+# Node.js dependencies
+node_modules/
+package-lock.json
