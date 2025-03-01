@@ -22,5 +22,5 @@ Sebelum memulai, pastikan Anda telah menginstal:
 
 ### 1️⃣ Clone Repository & Masuk ke Direktori Proyek
 ```bash
-git clone https://github.com/Rizald95/ArticleNewsAPI.git
+git clone https://github.com/username/ArticleNewsAPI.git
 cd ArticleNewsAPI
