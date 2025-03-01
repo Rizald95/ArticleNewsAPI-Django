@@ -12,16 +12,26 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import environ
+import os
 
-# Inisialisasi django-environ
-env = environ.Env()
-environ.Env.read_env()
-
-# Ambil API Key dari file .env
-NEWSAPI_KEY = env("NEWSAPI_KEY")
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Set BASE_DIR
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env()
+environ.Env.read_env(env_file=str(BASE_DIR / ".env"))  # Pastikan membaca file .env
+
+# Ambil API Key dengan default kosong agar tidak error jika variabel tidak ada
+NEWS_API_KEY = env("NEWSAPI_KEY", default="")
+# Cek apakah NEWS_API_KEY terbaca
+print(f"NEWS_API_KEY: {NEWS_API_KEY}")  # Debugging
+
+
+# Static files configuration
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 
 # Quick-start development settings - unsuitable for production
@@ -64,7 +74,7 @@ ROOT_URLCONF = 'ArticleNewsAPI.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
