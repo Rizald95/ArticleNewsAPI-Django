@@ -599,33 +599,12 @@ body {
   max-width: 80rem;
 }
 
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
 .static {
   position: static;
 }
 
-.absolute {
-  position: absolute;
-}
-
 .relative {
   position: relative;
-}
-
-.mx-1 {
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
 }
 
 .mx-auto {
@@ -651,6 +630,10 @@ body {
 
 .mb-6 {
   margin-bottom: 1.5rem;
+}
+
+.inline-block {
+  display: inline-block;
 }
 
 .flex {
@@ -717,6 +700,15 @@ body {
   flex: 1 1 0%;
 }
 
+.translate-x-1 {
+  --tw-translate-x: 0.25rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.transform {
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
 @keyframes pulse {
   50% {
     opacity: 0.5;
@@ -749,6 +741,10 @@ body {
 
 .justify-between {
   justify-content: space-between;
+}
+
+.gap-2 {
+  gap: 0.5rem;
 }
 
 .gap-4 {
@@ -805,11 +801,6 @@ body {
   background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));
 }
 
-.bg-gray-600 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(75 85 99 / var(--tw-bg-opacity, 1));
-}
-
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
@@ -863,6 +854,10 @@ body {
   font-weight: 700;
 }
 
+.font-medium {
+  font-weight: 500;
+}
+
 .leading-tight {
   line-height: 1.25;
 }
@@ -914,6 +909,10 @@ body {
   transition-duration: 200ms;
 }
 
+.duration-300 {
+  transition-duration: 300ms;
+}
+
 .ease-in-out {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -940,6 +939,10 @@ body {
   animation-duration: 200ms;
 }
 
+.duration-300 {
+  animation-duration: 300ms;
+}
+
 .ease-in-out {
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -962,33 +965,19 @@ nav a:is(.dark *) {
   color: rgb(167 139 250 / var(--tw-text-opacity, 1));
 }
 
-/* Theme toggle animations */
+/* Theme toggle transitions */
 
-#theme-toggle:checked + span {
-  transform: translateX(1.25rem);
+#theme-toggle span {
+  transition: transform 0.3s ease-in-out;
 }
 
-#theme-toggle + span {
-  transition: transform 0.2s ease-in-out;
-}
+/* Smooth transitions for theme changes */
 
-/* Theme toggle transition */
-
-#theme-toggle + div::after {
-  transition-property: transform;
-  transition-duration: 200ms;
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.focus-within\:ring-2:focus-within {
-  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-}
-
-.focus-within\:ring-purple-500:focus-within {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(139 92 246 / var(--tw-ring-opacity, 1));
+  transition-duration: 200ms;
+  animation-duration: 200ms;
 }
 
 .hover\:text-purple-400:hover {
@@ -996,8 +985,8 @@ nav a:is(.dark *) {
   color: rgb(167 139 250 / var(--tw-text-opacity, 1));
 }
 
-.peer:checked ~ .peer-checked\:translate-x-5 {
-  --tw-translate-x: 1.25rem;
+.dark\:translate-x-6:is(.dark *) {
+  --tw-translate-x: 1.5rem;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -1009,6 +998,11 @@ nav a:is(.dark *) {
 .dark\:bg-black:is(.dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
+}
+
+.dark\:bg-gray-700:is(.dark *) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1));
 }
 
 .dark\:bg-gray-800:is(.dark *) {

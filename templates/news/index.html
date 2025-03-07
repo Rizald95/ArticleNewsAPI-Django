@@ -19,20 +19,20 @@
                 <a href="#" class="text-purple-500 hover:text-purple-400 transition-colors">AI</a>
                 <a href="#" class="text-purple-500 hover:text-purple-400 transition-colors">Science</a>
             </nav>
-            <!-- Theme Toggle Switch -->
-            <div class="flex items-center">
-                <div class="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-600 transition-colors duration-200 ease-in-out focus-within:ring-2 focus-within:ring-purple-500">
-                    <input
-                        type="checkbox"
-                        id="theme-toggle"
-                        class="peer sr-only"
-                        aria-label="Toggle dark mode"
-                    />
-                    <span
-                        aria-hidden="true"
-                        class="absolute mx-1 h-4 w-4 rounded-full bg-white transition-transform duration-200 ease-in-out peer-checked:translate-x-5"
+            <!-- New Simple Theme Toggle -->
+            <div class="flex items-center gap-2">
+                <button 
+                    id="theme-toggle" 
+                    class="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 dark:bg-gray-700 transition-colors duration-300"
+                    aria-label="Toggle theme"
+                >
+                    <span 
+                        class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 ease-in-out translate-x-1 dark:translate-x-6"
                     ></span>
-                </div>
+                </button>
+                <span id="mode-text" class="text-sm font-medium">
+                    Dark Mode
+                </span>
             </div>
         </header>
 
@@ -77,26 +77,34 @@
 
     <script src="{% static 'js/app.js' %}"></script>
     <script>
-        // Theme toggle functionality
-        const themeToggle = document.getElementById('theme-toggle');
-        const html = document.documentElement;
-        
-        // Set initial state
-        themeToggle.checked = html.classList.contains('dark');
-        
-        // Check for saved theme preference
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            html.classList.add('dark');
-            themeToggle.checked = true;
-        } else {
-            html.classList.remove('dark');
-            themeToggle.checked = false;
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const html = document.documentElement;
+            const toggle = document.getElementById('theme-toggle');
+            const modeText = document.getElementById('mode-text');
+            
+            // Function to update theme
+            function updateTheme(isDark) {
+                if (isDark) {
+                    html.classList.add('dark');
+                    modeText.textContent = 'Light Mode';
+                } else {
+                    html.classList.remove('dark');
+                    modeText.textContent = 'Dark Mode';
+                }
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            }
 
-        // Toggle theme
-        themeToggle.addEventListener('change', () => {
-            html.classList.toggle('dark');
-            localStorage.theme = html.classList.contains('dark') ? 'dark' : 'light';
+            // Set initial theme
+            const isDarkMode = localStorage.getItem('theme') === 'dark' || 
+                (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            
+            updateTheme(isDarkMode);
+
+            // Toggle theme on click
+            toggle.addEventListener('click', () => {
+                const isDark = html.classList.toggle('dark');
+                updateTheme(isDark);
+            });
         });
     </script>
 </body>

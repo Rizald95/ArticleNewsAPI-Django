@@ -20,18 +20,12 @@ nav a {
   @apply text-purple-500 dark:text-purple-400;
 }
 
-/* Theme toggle animations */
-#theme-toggle:checked + span {
-  transform: translateX(1.25rem);
+/* Theme toggle transitions */
+#theme-toggle span {
+  transition: transform 0.3s ease-in-out;
 }
 
-#theme-toggle + span {
-  transition: transform 0.2s ease-in-out;
-}
-
-/* Theme toggle transition */
-#theme-toggle + div::after {
-  transition-property: transform;
-  transition-duration: 200ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+/* Smooth transitions for theme changes */
+* {
+  @apply transition-colors duration-200;
 }
