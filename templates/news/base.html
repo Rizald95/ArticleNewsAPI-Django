@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech News</title>
+    <title>{% block title %}Tech News{% endblock %}</title>
     <link href="{% static 'css/output.css' %}" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
 </head>
 <body class="bg-white dark:bg-black text-gray-900 dark:text-white min-h-screen transition-colors duration-200">
     <div class="container mx-auto px-4 py-6">
@@ -19,7 +20,7 @@
                 <a href="{% url 'news:ai' %}" class="text-purple-500 hover:text-purple-400 transition-colors">AI</a>
                 <a href="{% url 'news:science' %}" class="text-purple-500 hover:text-purple-400 transition-colors">Science</a>
             </nav>
-            <!-- New Simple Theme Toggle -->
+            <!-- Theme Toggle -->
             <div class="flex items-center gap-2">
                 <button 
                     id="theme-toggle" 
@@ -37,44 +38,11 @@
         </header>
 
         <!-- Main Content -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Featured Article -->
-            <div class="lg:col-span-2" id="featured-article">
-                <div class="flex flex-col md:flex-row gap-6">
-                    <div class="md:w-1/2">
-                        <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">Loading featured article...</h1>
-                        <p class="text-gray-600 dark:text-gray-400 mb-6">Please wait while we load the latest news.</p>
-                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 space-x-4">
-                            <span>Tech News</span>
-                            <span>|</span>
-                            <span>Author</span>
-                            <span>|</span>
-                            <span>Date</span>
-                        </div>
-                    </div>
-                    <div class="md:w-1/2">
-                        <div class="bg-gray-200 dark:bg-gray-800 w-full h-64 rounded-lg animate-pulse"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sidebar Articles -->
-            <div class="space-y-6" id="sidebar-articles">
-                <div class="animate-pulse">
-                    <div class="flex gap-4">
-                        <div class="w-24 h-24 bg-gray-200 dark:bg-gray-800 rounded-lg"></div>
-                        <div class="flex-1">
-                            <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-3/4 mb-2"></div>
-                            <div class="h-6 bg-gray-200 dark:bg-gray-800 rounded w-full mb-2"></div>
-                            <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-1/2"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% block content %}{% endblock %}
     </div>
 
     <script src="{% static 'js/app.js' %}"></script>
+    {% block extra_js %}{% endblock %}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const html = document.documentElement;

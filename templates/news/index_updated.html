@@ -1,0 +1,177 @@
+{% extends 'news/base.html' %}
+
+{% load static %}
+
+{% block title %}Tech News{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Featured Article -->
+    <div class="lg:col-span-2" id="featured-article">
+        <div class="flex flex-col md:flex-row gap-6">
+            <div class="md:w-1/2">
+                <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">Loading featured article...</h1>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">Please wait while we load the latest news.</p>
+                <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 space-x-4">
+                    <span>Tech News</span>
+                    <span>|</span>
+                    <span>Author</span>
+                    <span>|</span>
+                    <span>Date</span>
+                </div>
+            </div>
+            <div class="md:w-1/2">
+                <div class="bg-gray-200 dark:bg-gray-800 w-full h-64 rounded-lg animate-pulse"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Articles -->
+    <div class="space-y-6" id="sidebar-articles">
+        <div class="animate-pulse">
+            <div class="flex gap-4">
+                <div class="w-24 h-24 bg-gray-200 dark:bg-gray-800 rounded-lg"></div>
+                <div class="flex-1">
+                    <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-3/4 mb-2"></div>
+                    <div class="h-6 bg-gray-200 dark:bg-gray-800 rounded w-full mb-2"></div>
+                    <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-1/2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Fetch articles from News API endpoint
+    async function fetchArticles() {
+        try {
+            console.log("Fetching articles...") // Debug log
+            const response = await fetch("/api/news/")
+
+            console.log("Response status:", response.status) // Debug log
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`)
+            }
+
+            const data = await response.json()
+            console.log("Received data:", data) // Debug log
+
+            if (data.status === "ok" && data.articles && data.articles.length > 0) {
+                console.log("Processing articles...") // Debug log
+
+                // Get the first article as featured
+                const featuredArticle = data.articles[0]
+                updateFeaturedArticle(featuredArticle)
+
+                // Get the next 4 articles for sidebar
+                const sidebarArticles = data.articles.slice(1, 5)
+                updateSidebarArticles(sidebarArticles)
+            } else {
+                console.error("No articles found in the response:", data)
+                showError("No articles found")
+            }
+        } catch (error) {
+            console.error("Error fetching articles:", error)
+            showError("Failed to load articles")
+        }
+    }
+
+    // Format date to readable format
+    function formatDate(dateString) {
+        const date = new Date(dateString)
+        return date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        })
+    }
+
+    // Calculate read time based on content length
+    function calculateReadTime(content) {
+        if (!content) return 3
+        const wordCount = content.split(/\s+/).length
+        const readTime = Math.ceil(wordCount / 200)
+        return readTime < 1 ? 1 : readTime
+    }
+
+    // Show error message to user
+    function showError(message) {
+        const featuredSection = document.getElementById("featured-article")
+        if (featuredSection) {
+            const titleElement = featuredSection.querySelector("h1")
+            const descriptionElement = featuredSection.querySelector("p")
+
+            if (titleElement) titleElement.textContent = "Error Loading News"
+            if (descriptionElement) descriptionElement.textContent = message
+        }
+    }
+
+    // Update featured article with data from API
+    function updateFeaturedArticle(article) {
+        console.log("Updating featured article:", article) // Debug log
+        const featuredSection = document.getElementById("featured-article")
+        if (!featuredSection) return
+
+        const titleElement = featuredSection.querySelector("h1")
+        const descriptionElement = featuredSection.querySelector("p")
+        const sourceElement = featuredSection.querySelector(".text-gray-400 span:first-child, .text-gray-500 span:first-child")
+        const authorElement = featuredSection.querySelector(".text-gray-400 span:nth-child(3), .text-gray-500 span:nth-child(3)")
+        const dateElement = featuredSection.querySelector(".text-gray-400 span:nth-child(5), .text-gray-500 span:nth-child(5)")
+        const imageContainer = featuredSection.querySelector(".md\\:w-1\\/2:last-child")
+
+        if (titleElement) titleElement.textContent = article.title
+        if (descriptionElement) descriptionElement.textContent = article.description
+        if (sourceElement) sourceElement.textContent = article.source.name
+        if (authorElement) authorElement.textContent = article.author || "Unknown Author"
+        if (dateElement) dateElement.textContent = formatDate(article.publishedAt)
+
+        if (imageContainer) {
+            imageContainer.innerHTML = `
+                <img src="${article.urlToImage || "/static/images/placeholder.jpg"}" 
+                    alt="${article.title}"
+                    class="w-full h-64 object-cover rounded-lg"
+                    onerror="this.src='/static/images/placeholder.jpg'"
+                >
+            `
+        }
+    }
+
+    // Update sidebar articles with data from API
+    function updateSidebarArticles(articles) {
+        console.log("Updating sidebar articles:", articles) // Debug log
+        const sidebarSection = document.getElementById("sidebar-articles")
+        if (!sidebarSection) return
+
+        sidebarSection.innerHTML = articles
+            .map((article) => {
+                const readTime = calculateReadTime(article.content)
+                return `
+                    <div class="flex gap-4">
+                        <img src="${article.urlToImage || "/static/images/placeholder.jpg"}" 
+                            alt="${article.title}" 
+                            class="w-24 h-24 object-cover rounded-lg"
+                            onerror="this.src='/static/images/placeholder.jpg'"
+                        >
+                        <div>
+                            <div class="text-sm text-gray-400 mb-1">${article.author || "Unknown Author"} | ${formatDate(article.publishedAt)}</div>
+                            <h3 class="text-lg font-bold mb-1">${article.title}</h3>
+                            <div class="flex items-center text-sm text-gray-400 space-x-4">
+                                <span>${article.source.name}</span>
+                                <span>|</span>
+                                <span>${readTime} mins read</span>
+                            </div>
+                        </div>
+                    </div>
+                `
+            })
+            .join("")
+    }
+
+    // Initialize when the DOM is loaded
+    document.addEventListener("DOMContentLoaded", fetchArticles)
+</script>
+{% endblock %}
+
